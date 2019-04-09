@@ -345,7 +345,8 @@ export const Crud = (dto: any, crudOptions: CrudOptions = {}) => (target: object
   }
 
   // method override
-  Object.getOwnPropertyNames(prototype).forEach((name) => {
+  // tslint:disable-next-line:forin
+  for (const name of Object.getOwnPropertyNames(prototype)) {
     const override = getOverrideMetadata(prototype[name]);
     const route = baseRoutes[override];
 
@@ -372,7 +373,7 @@ export const Crud = (dto: any, crudOptions: CrudOptions = {}) => (target: object
       setRoute(route.path, route.method, prototype[name]);
       route.override = true;
     }
-  });
+  }
 
   // set routes for base functions
   // tslint:disable-next-line:forin
