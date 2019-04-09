@@ -63,16 +63,17 @@ export class RestfulParamsInterceptor implements NestInterceptor {
     switch (type) {
       // is number
       case 'number':
-        const isNumeric =
-          'string' === typeof value && !isNaN(parseFloat(value)) && isFinite(value as any);
+        if (typeof value === 'string') {
+          const numberValue = Number.parseInt(value, 10);
 
-        if (!isNumeric) {
-          throw new BadRequestException(
-            `Validation failed. Param '${key}': numeric string is expected`,
-          );
+          if (!Number.isNaN(numberValue) && Number.isFinite(numberValue)) {
+            return numberValue;
+          }
         }
 
-        return parseInt(value, 10);
+        throw new BadRequestException(
+          `Validation failed. Param '${key}': numeric string is expected`,
+        );
 
       // is UUID
       case 'uuid':
