@@ -330,11 +330,11 @@ export function setValidationPipe(crudOptions: CrudOptions, group: CrudValidate)
 
 export function enableRoute(name: BaseRouteName, crudOptions: CrudOptions) {
   if (crudOptions.routes.only && crudOptions.routes.only.length) {
-    return crudOptions.routes.only.some((only) => only === name);
+    return crudOptions.routes.only.includes(name);
   }
 
   if (crudOptions.routes.exclude && crudOptions.routes.exclude.length) {
-    return !crudOptions.routes.exclude.some((exclude) => exclude === name);
+    return !crudOptions.routes.exclude.includes(name);
   }
 
   return true;
@@ -430,7 +430,7 @@ export function overrideParsedBody(target: any, baseName: BaseRouteName, name: s
       const metatype = paramTypes[parsedBody.index];
       const types = [String, Boolean, Number, Array, Object];
       /* istanbul ignore next line */
-      const toCopy = types.some((t) => metatype === t) || isNil(metatype);
+      const toCopy = types.includes(metatype) || isNil(metatype);
 
       if (toCopy) {
         const baseParamTypes = getParamTypes(prototype, baseName);
