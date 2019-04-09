@@ -86,10 +86,10 @@ export class RestfulQueryInterceptor implements NestInterceptor {
     const params = str.split(this.delim);
     const field = params[0];
     const operator = params[1] as ComparisonOperator;
-    let value = params[2] || '';
+    let value: string | string[] = params[2] || '';
 
     if (isArrayValue.includes(operator)) {
-        value = this.splitString(value) as any;
+        value = this.splitString(value);
       }
 
     return {
