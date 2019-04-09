@@ -98,7 +98,7 @@ export class RestfulParamsInterceptor implements NestInterceptor {
    * @param parsedParams
    */
   private parseOptions(parsedParams: FilterParamParsed[], crudOptions: CrudOptions): CrudOptions {
-    const options = Object.assign({}, crudOptions.options || {}) as RestfulOptions;
+    const options = Object.assign({}, crudOptions.options) as RestfulOptions;
     const optionsFilter = options.filter || [];
     const filter = [...optionsFilter, ...parsedParams];
 
