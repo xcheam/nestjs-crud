@@ -72,63 +72,53 @@ export class RestfulQueryInterceptor implements NestInterceptor {
   }
 
   private splitString(str: string): string[] {
-    try {
-      return str ? str.split(this.delimStr) : [];
-    } catch (error) {
-      return str as any;
-    }
+    return typeof str === 'string' ? str.split(this.delimStr) : [];
   }
 
   private parseInt(str: string): number {
-    return str ? parseInt(str, 10) : undefined;
+    return typeof str === 'string' ? parseInt(str, 10) : undefined;
   }
 
   private parseFilter(str: string): FilterParamParsed {
-    try {
-      const isArrayValue = ['in', 'notin', 'between'];
-      const params = str.split(this.delim);
-      const field = params[0];
-      const operator = params[1] as ComparisonOperator;
-      let value = params[2] || '';
+    if (typeof str !== 'string') return;
 
-      if (isArrayValue.includes(operator)) {
+    const isArrayValue = ['in', 'notin', 'between'];
+    const params = str.split(this.delim);
+    const field = params[0];
+    const operator = params[1] as ComparisonOperator;
+    let value = params[2] || '';
+
+    if (isArrayValue.includes(operator)) {
         value = this.splitString(value) as any;
       }
 
-      return {
-        field,
-        operator,
-        value,
-      };
-    } catch (error) {
-      return str as any;
-    }
+    return {
+      field,
+      operator,
+      value,
+    };
   }
 
   private parseSort(str: string): SortParamParsed {
-    try {
-      const params = str.split(this.delimStr);
+    if (typeof str !== 'string') return;
 
-      return {
-        field: params[0],
-        order: params[1] as any,
-      };
-    } catch (error) {
-      return str as any;
-    }
+    const params = str.split(this.delimStr);
+
+    return {
+      field: params[0],
+      order: params[1] as any,
+    };
   }
 
   private parseJoin(str: string): JoinParamParsed {
-    try {
-      const params = str.split(this.delim);
+    if (typeof str !== 'string') return;
 
-      return {
-        field: params[0],
-        select: params[1] ? this.splitString(params[1]) : [],
-      };
-    } catch (error) {
-      return str as any;
-    }
+    const params = str.split(this.delim);
+
+    return {
+      field: params[0],
+      select: params[1] ? this.splitString(params[1]) : [],
+    };
   }
 
   private parseArray(param: string[], parser: Function) {
