@@ -6,8 +6,8 @@ import { RestfulQueryInterceptor, RestfulParamsInterceptor } from '../intercepto
 export function UsePathInterceptors(...names: Array<'query' | 'param'>) {
   return (target: any, key?, descriptor?) => {
     const all = ['query', 'param'];
-    const every = (arr: string[]): boolean => all.every((n) => arr.some((name) => name === n));
-    const some = (arr: string[], name: string): boolean => arr.some((n) => name === n);
+    const every = (arr: string[]): boolean => all.every((n) => arr.includes(n));
+    const some = (arr: string[], name: string): boolean => arr.includes(name);
     let interceptors: any[] = [];
 
     if (!names.length || every(names)) {
