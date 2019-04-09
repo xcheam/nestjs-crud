@@ -91,7 +91,7 @@ export class RestfulQueryInterceptor implements NestInterceptor {
       const operator = params[1] as ComparisonOperator;
       let value = params[2] || '';
 
-      if (isArrayValue.some((name) => name === operator)) {
+      if (isArrayValue.includes(operator)) {
         value = this.splitString(value) as any;
       }
 
@@ -149,7 +149,7 @@ export class RestfulQueryInterceptor implements NestInterceptor {
 
   private parseEntityFields(query: RequestQueryParams): FilterParamParsed[] {
     return Object.keys(query)
-      .filter((key) => !this.reservedFields.some((reserved) => reserved === key))
+      .filter((key) => !this.reservedFields.includes(key))
       .map((field) => ({ field, operator: 'eq', value: query[field] } as FilterParamParsed));
   }
 }
