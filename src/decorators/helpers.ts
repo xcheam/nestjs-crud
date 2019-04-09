@@ -394,11 +394,11 @@ export function getRouteInterceptors(routeOptions: any): any[] {
 }
 
 export function cleanRoutesOptionsInterceptors(crudOptions: CrudOptions) {
-  Object.keys(<RoutesOptions>crudOptions.routes).forEach((option) => {
+  for (const option in crudOptions.routes) {
     if (option !== 'exclude' && option !== 'only') {
       crudOptions.routes[option].interceptors = [];
     }
-  });
+  }
 }
 
 export function overrideParsedBody(target: any, baseName: BaseRouteName, name: string) {

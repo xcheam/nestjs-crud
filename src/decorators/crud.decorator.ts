@@ -328,7 +328,8 @@ export const Crud = (dto: any, crudOptions: CrudOptions = {}) => (target: object
   const slug = getRoutesSlugName(crudOptions, path);
 
   // set routes
-  Object.keys(baseRoutes).forEach((name) => {
+  // tslint:disable-next-line:forin
+  for (const name in baseRoutes) {
     const route = baseRoutes[name];
 
     if (enableRoute(route.name, crudOptions)) {
@@ -341,7 +342,7 @@ export const Crud = (dto: any, crudOptions: CrudOptions = {}) => (target: object
       baseRoutesInit[route.name](target, route.name, dto, crudOptions);
       route.enable = true;
     }
-  });
+  }
 
   // method override
   Object.getOwnPropertyNames(prototype).forEach((name) => {
@@ -374,13 +375,14 @@ export const Crud = (dto: any, crudOptions: CrudOptions = {}) => (target: object
   });
 
   // set routes for base functions
-  Object.keys(baseRoutes).forEach((name) => {
+  // tslint:disable-next-line:forin
+  for (const name in baseRoutes) {
     const route = baseRoutes[name];
 
     if (!route.override && route.enable) {
       setRoute(route.path, route.method, prototype[route.name]);
     }
-  });
+  }
 
   // clean interceptors in RoutesOptions for perf reasons
   cleanRoutesOptionsInterceptors(crudOptions);
