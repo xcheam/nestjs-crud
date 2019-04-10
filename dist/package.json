@@ -1,15 +1,15 @@
 {
-  "name": "@nestjsx/crud",
-  "version": "3.2.0",
+  "name": "@xcheam/nestjs-crud",
+  "version": "3.2.14",
   "description": "NestJs CRUD for RESTful APIs",
   "main": "index.js",
   "types": "index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nestjsx/crud.git"
+    "url": "https://github.com/xcheam/nestjs-crud.git"
   },
   "bugs": {
-    "url": "https://github.com/nestjsx/crud/issues"
+    "url": "https://github.com/xcheam/nestjs-crud/issues"
   },
   "keywords": [
     "typescript",
@@ -22,8 +22,8 @@
     "crud"
   ],
   "author": {
-    "name": "Michael Yali",
-    "email": "mihon4ik@gmail.com"
+    "name": "@xcheam",
+    "email": "frullah12@gmail.com"
   },
   "license": "MIT",
   "peerDependencies": {
