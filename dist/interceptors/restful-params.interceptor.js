@@ -51,11 +51,13 @@ let RestfulParamsInterceptor = class RestfulParamsInterceptor {
     validate(key, type, value) {
         switch (type) {
             case 'number':
-                const isNumeric = 'string' === typeof value && !isNaN(parseFloat(value)) && isFinite(value);
-                if (!isNumeric) {
-                    throw new common_1.BadRequestException(`Validation failed. Param '${key}': numeric string is expected`);
+                if (typeof value === 'string') {
+                    const numberValue = Number.parseInt(value, 10);
+                    if (!Number.isNaN(numberValue) && Number.isFinite(numberValue)) {
+                        return numberValue;
+                    }
                 }
-                return parseInt(value, 10);
+                throw new common_1.BadRequestException(`Validation failed. Param '${key}': numeric string is expected`);
             case 'uuid':
                 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
                 if (!uuid.test(value)) {
@@ -67,7 +69,7 @@ let RestfulParamsInterceptor = class RestfulParamsInterceptor {
         }
     }
     parseOptions(parsedParams, crudOptions) {
-        const options = Object.assign({}, crudOptions.options || {});
+        const options = Object.assign({}, crudOptions.options);
         const optionsFilter = options.filter || [];
         const filter = [...optionsFilter, ...parsedParams];
         if (filter.length) {

@@ -176,7 +176,7 @@ exports.Crud = (dto, crudOptions = {}) => (target) => {
     const path = helpers_1.getControllerPath(target);
     helpers_1.setDefaultCrudOptions(crudOptions, target);
     const slug = helpers_1.getRoutesSlugName(crudOptions, path);
-    Object.keys(baseRoutes).forEach((name) => {
+    for (const name in baseRoutes) {
         const route = baseRoutes[name];
         if (helpers_1.enableRoute(route.name, crudOptions)) {
             if (!route.path.length) {
@@ -185,8 +185,8 @@ exports.Crud = (dto, crudOptions = {}) => (target) => {
             baseRoutesInit[route.name](target, route.name, dto, crudOptions);
             route.enable = true;
         }
-    });
-    Object.getOwnPropertyNames(prototype).forEach((name) => {
+    }
+    for (const name of Object.getOwnPropertyNames(prototype)) {
         const override = helpers_1.getOverrideMetadata(prototype[name]);
         const route = baseRoutes[override];
         if (override && route && route.enable) {
@@ -205,13 +205,13 @@ exports.Crud = (dto, crudOptions = {}) => (target) => {
             helpers_1.setRoute(route.path, route.method, prototype[name]);
             route.override = true;
         }
-    });
-    Object.keys(baseRoutes).forEach((name) => {
+    }
+    for (const name in baseRoutes) {
         const route = baseRoutes[name];
         if (!route.override && route.enable) {
             helpers_1.setRoute(route.path, route.method, prototype[route.name]);
         }
-    });
+    }
     helpers_1.cleanRoutesOptionsInterceptors(crudOptions);
 };
 exports.Override = (name) => (target, key, descriptor) => {

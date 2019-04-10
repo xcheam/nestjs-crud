@@ -277,10 +277,10 @@ function setValidationPipe(crudOptions, group) {
 exports.setValidationPipe = setValidationPipe;
 function enableRoute(name, crudOptions) {
     if (crudOptions.routes.only && crudOptions.routes.only.length) {
-        return crudOptions.routes.only.some((only) => only === name);
+        return crudOptions.routes.only.includes(name);
     }
     if (crudOptions.routes.exclude && crudOptions.routes.exclude.length) {
-        return !crudOptions.routes.exclude.some((exclude) => exclude === name);
+        return !crudOptions.routes.exclude.includes(name);
     }
     return true;
 }
@@ -326,11 +326,11 @@ function getRouteInterceptors(routeOptions) {
 }
 exports.getRouteInterceptors = getRouteInterceptors;
 function cleanRoutesOptionsInterceptors(crudOptions) {
-    Object.keys(crudOptions.routes).forEach((option) => {
+    for (const option in crudOptions.routes) {
         if (option !== 'exclude' && option !== 'only') {
             crudOptions.routes[option].interceptors = [];
         }
-    });
+    }
 }
 exports.cleanRoutesOptionsInterceptors = cleanRoutesOptionsInterceptors;
 function overrideParsedBody(target, baseName, name) {
@@ -349,7 +349,7 @@ function overrideParsedBody(target, baseName, name) {
             const paramTypes = getParamTypes(prototype, name);
             const metatype = paramTypes[parsedBody.index];
             const types = [String, Boolean, Number, Array, Object];
-            const toCopy = types.some((t) => metatype === t) || shared_utils_1.isNil(metatype);
+            const toCopy = types.includes(metatype) || shared_utils_1.isNil(metatype);
             if (toCopy) {
                 const baseParamTypes = getParamTypes(prototype, baseName);
                 const baseMetatype = baseParamTypes[1];

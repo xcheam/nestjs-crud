@@ -63,59 +63,45 @@ let RestfulQueryInterceptor = class RestfulQueryInterceptor {
         return result;
     }
     splitString(str) {
-        try {
-            return str ? str.split(this.delimStr) : [];
-        }
-        catch (error) {
-            return str;
-        }
+        return typeof str === 'string' ? str.split(this.delimStr) : [];
     }
     parseInt(str) {
-        return str ? parseInt(str, 10) : undefined;
+        return typeof str === 'string' ? parseInt(str, 10) : undefined;
     }
     parseFilter(str) {
-        try {
-            const isArrayValue = ['in', 'notin', 'between'];
-            const params = str.split(this.delim);
-            const field = params[0];
-            const operator = params[1];
-            let value = params[2] || '';
-            if (isArrayValue.some((name) => name === operator)) {
-                value = this.splitString(value);
-            }
-            return {
-                field,
-                operator,
-                value,
-            };
+        if (typeof str !== 'string')
+            return;
+        const isArrayValue = ['in', 'notin', 'between'];
+        const params = str.split(this.delim);
+        const field = params[0];
+        const operator = params[1];
+        let value = params[2] || '';
+        if (isArrayValue.includes(operator)) {
+            value = this.splitString(value);
         }
-        catch (error) {
-            return str;
-        }
+        return {
+            field,
+            operator,
+            value,
+        };
     }
     parseSort(str) {
-        try {
-            const params = str.split(this.delimStr);
-            return {
-                field: params[0],
-                order: params[1],
-            };
-        }
-        catch (error) {
-            return str;
-        }
+        if (typeof str !== 'string')
+            return;
+        const params = str.split(this.delimStr);
+        return {
+            field: params[0],
+            order: params[1],
+        };
     }
     parseJoin(str) {
-        try {
-            const params = str.split(this.delim);
-            return {
-                field: params[0],
-                select: params[1] ? this.splitString(params[1]) : [],
-            };
-        }
-        catch (error) {
-            return str;
-        }
+        if (typeof str !== 'string')
+            return;
+        const params = str.split(this.delim);
+        return {
+            field: params[0],
+            select: params[1] ? this.splitString(params[1]) : [],
+        };
     }
     parseArray(param, parser) {
         if (typeof param === 'string') {
@@ -132,7 +118,7 @@ let RestfulQueryInterceptor = class RestfulQueryInterceptor {
     }
     parseEntityFields(query) {
         return Object.keys(query)
-            .filter((key) => !this.reservedFields.some((reserved) => reserved === key))
+            .filter((key) => !this.reservedFields.includes(key))
             .map((field) => ({ field, operator: 'eq', value: query[field] }));
     }
 };

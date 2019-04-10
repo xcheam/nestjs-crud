@@ -6,8 +6,8 @@ const interceptors_1 = require("../interceptors");
 function UsePathInterceptors(...names) {
     return (target, key, descriptor) => {
         const all = ['query', 'param'];
-        const every = (arr) => all.every((n) => arr.some((name) => name === n));
-        const some = (arr, name) => arr.some((n) => name === n);
+        const every = (arr) => all.every((n) => arr.includes(n));
+        const some = (arr, name) => arr.includes(name);
         let interceptors = [];
         if (!names.length || every(names)) {
             interceptors = [interceptors_1.RestfulQueryInterceptor, interceptors_1.RestfulParamsInterceptor];
